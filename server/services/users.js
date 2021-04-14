@@ -8,6 +8,10 @@ exports.getUserByID = (id) => {
    return usersData.getUserByID(id);
 };
 
+exports.getUserHistory = (id) => {
+   return usersData.getUserHistory(id);
+};
+
 exports.createUser = (user) => {
    return usersData.createUser(user);
 };

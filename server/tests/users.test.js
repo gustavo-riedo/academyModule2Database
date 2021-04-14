@@ -1,6 +1,7 @@
 const crypto = require('crypto');
 const axios = require('axios');
 const userServices = require('../services/users');
+const operationServices = require('../services/operations');
 
 const generateData = () => {
    return crypto.randomBytes(20).toString('hex');
@@ -32,9 +33,9 @@ test('Should get users', async () => {
    expect(users).toHaveLength(3);
 
    // Test cleaning
-   userServices.deleteUser(user1.id);
-   userServices.deleteUser(user2.id);
-   userServices.deleteUser(user3.id);
+   await userServices.deleteUser(user1.id);
+   await userServices.deleteUser(user2.id);
+   await userServices.deleteUser(user3.id);
 });
 
 test('Should get a user by ID', async () => {
@@ -53,7 +54,7 @@ test('Should get a user by ID', async () => {
    expect(users).toHaveLength(1);
 
    // Test cleaning
-   userServices.deleteUser(user.id);
+   await userServices.deleteUser(user.id);
 });
 
 test('Should create users', async () => {
@@ -74,7 +75,7 @@ test('Should create users', async () => {
    expect(createdUser.pswrd).toBe(userData.pswrd);
 
    // Test cleaning
-   userServices.deleteUser(createdUser.id);
+   await userServices.deleteUser(createdUser.id);
 });
 
 test('Should update users wallet', async () => {
@@ -104,7 +105,7 @@ test('Should update users wallet', async () => {
    expect(userGBPbal).toBe(String(newBalance.accbalancegbp));
 
    // Test cleaning
-   userServices.deleteUser(user.id);
+   await userServices.deleteUser(user.id);
 });
 
 test('Should delete users', async () => {
@@ -123,4 +124,46 @@ test('Should delete users', async () => {
 
    // Test condition
    expect(users).toBe(null);
+});
+
+test('Should get a user history', async () => {
+   // Test data
+   const user = await userServices.createUser({
+      username: generateData(),
+      email: generateData(),
+      pswrd: generateData(),
+   });
+   const operation1 = await operationServices.createOperation({
+      tradetype: generateData(),
+      income: Math.floor(Math.floor(Math.random() * (10000 - 0) + 0)) / 100,
+      rate: Math.floor(Math.floor(Math.random() * (10 - 0) + 0)) / 100000,
+      userid: user.id,
+   });
+   const operation2 = await operationServices.createOperation({
+      tradetype: generateData(),
+      income: Math.floor(Math.floor(Math.random() * (10000 - 0) + 0)) / 100,
+      rate: Math.floor(Math.floor(Math.random() * (10 - 0) + 0)) / 100000,
+      userid: user.id,
+   });
+   const operation3 = await operationServices.createOperation({
+      tradetype: generateData(),
+      income: Math.floor(Math.floor(Math.random() * (10000 - 0) + 0)) / 100,
+      rate: Math.floor(Math.floor(Math.random() * (10 - 0) + 0)) / 100000,
+      userid: user.id,
+   });
+
+   // Test process
+   const response = await axios.get(
+      'http://localhost:3000/users/history/' + user.id
+   );
+   const history = response.data;
+
+   // Test condition
+   expect(history).toHaveLength(3);
+
+   // Test cleaning
+   await operationServices.deleteOperation(operation1.id);
+   await operationServices.deleteOperation(operation2.id);
+   await operationServices.deleteOperation(operation3.id);
+   await userServices.deleteUser(user.id);
 });

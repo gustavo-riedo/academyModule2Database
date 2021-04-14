@@ -18,7 +18,7 @@ test('Should create operations', async () => {
    const operationData = {
       tradetype: generateData(),
       income: Math.floor(Math.floor(Math.random() * (10000 - 0) + 0)) / 100,
-      rate: Math.floor(Math.floor(Math.random() * (25 - 0) + 0)) / 100,
+      rate: Math.floor(Math.floor(Math.random() * (10 - 0) + 0)) / 100000,
       userid: user.id,
    };
 
@@ -36,5 +36,33 @@ test('Should create operations', async () => {
 
    // Test cleaning
    await operationServices.deleteOperation(createdOperation.id);
+   await userServices.deleteUser(user.id);
+});
+
+test('Should delete operations', async () => {
+   // Test data
+   const user = await userServices.createUser({
+      username: generateData(),
+      email: generateData(),
+      pswrd: generateData(),
+   });
+
+   const operation = await operationServices.createOperation({
+      tradetype: generateData(),
+      income: Math.floor(Math.floor(Math.random() * (10000 - 0) + 0)) / 100,
+      rate: Math.floor(Math.floor(Math.random() * (10 - 0) + 0)) / 100000,
+      userid: user.id,
+   });
+
+   // Test process
+   const response = await axios.delete(
+      'http://localhost:3000/operations/' + operation.id
+   );
+   const deletedOperation = response.data;
+
+   // Test condition
+   expect(deletedOperation).toBe(null);
+
+   // Test cleaning
    await userServices.deleteUser(user.id);
 });

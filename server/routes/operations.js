@@ -5,7 +5,9 @@ const operationServices = require('../services/operations');
 
 router.post('/', async (req, res) => {
    const operationData = req.body;
-   const createdOperation = operationServices.createOperation(operationData);
+   const createdOperation = await operationServices.createOperation(
+      operationData
+   );
    res.json(createdOperation);
 });
 
@@ -13,7 +15,7 @@ router.delete('/:id', async (req, res) => {
    const deletedOperation = await operationServices.deleteOperation(
       req.params.id
    );
-   res.json(deletedUser);
+   res.json(deletedOperation);
 });
 
 module.exports = router;

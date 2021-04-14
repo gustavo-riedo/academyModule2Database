@@ -8,6 +8,10 @@ exports.getUserByID = (id) => {
    return database.query('SELECT * FROM app.user WHERE id = $1', [id]);
 };
 
+exports.getUserHistory = (id) => {
+   return database.query('SELECT * FROM app.operation WHERE userid = $1', [id]);
+};
+
 exports.createUser = (user) => {
    return database.one(
       'INSERT INTO app.user (username, email, pswrd) values ($1, $2, $3) RETURNING *',

@@ -13,6 +13,11 @@ router.get('/:id', async (req, res) => {
    res.json(user);
 });
 
+router.get('/history/:id', async (req, res) => {
+   const history = await usersService.getUserHistory(req.params.id);
+   res.json(history);
+});
+
 router.post('/', async (req, res) => {
    const userData = req.body;
    const createdUser = await usersService.createUser(userData);
