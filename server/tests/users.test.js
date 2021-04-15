@@ -26,7 +26,7 @@ test('Should get users', async () => {
    });
 
    // Test process
-   const response = await axios.get('http://localhost:3000/users');
+   const response = await axios.get('http://localhost:5000/users');
    const users = response.data;
 
    // Test condition
@@ -47,7 +47,7 @@ test('Should get a user by ID', async () => {
    });
 
    // Test process
-   const response = await axios.get('http://localhost:3000/users/' + user.id);
+   const response = await axios.get('http://localhost:5000/users/' + user.id);
    const users = response.data;
 
    // Test condition
@@ -66,7 +66,7 @@ test('Should create users', async () => {
    };
 
    // Test process
-   const response = await axios.post('http://localhost:3000/users', userData);
+   const response = await axios.post('http://localhost:5000/users', userData);
    const createdUser = response.data;
 
    // Test condition
@@ -94,7 +94,7 @@ test('Should update users wallet', async () => {
 
    // Test process
    const response = await axios.patch(
-      'http://localhost:3000/users/' + user.id,
+      'http://localhost:5000/users/' + user.id,
       newBalance
    );
    const userUSDbal = response.data.accbalanceusd;
@@ -118,7 +118,7 @@ test('Should delete users', async () => {
 
    // Test process
    const response = await axios.delete(
-      'http://localhost:3000/users/' + user.id
+      'http://localhost:5000/users/' + user.id
    );
    const users = response.data;
 
@@ -154,7 +154,7 @@ test('Should get a user history', async () => {
 
    // Test process
    const response = await axios.get(
-      'http://localhost:3000/users/history/' + user.id
+      'http://localhost:5000/users/history/' + user.id
    );
    const history = response.data;
 

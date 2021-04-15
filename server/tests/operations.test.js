@@ -24,7 +24,7 @@ test('Should create operations', async () => {
 
    // Test process
    const response = await axios.post(
-      'http://localhost:3000/operations',
+      'http://localhost:5000/operations',
       operationData
    );
    const createdOperation = response.data;
@@ -56,7 +56,7 @@ test('Should delete operations', async () => {
 
    // Test process
    const response = await axios.delete(
-      'http://localhost:3000/operations/' + operation.id
+      'http://localhost:5000/operations/' + operation.id
    );
    const deletedOperation = response.data;
 

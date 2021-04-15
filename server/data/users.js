@@ -5,7 +5,7 @@ exports.getUsers = () => {
 };
 
 exports.getUserByID = (id) => {
-   return database.query('SELECT * FROM app.user WHERE id = $1', [id]);
+   return database.one('SELECT * FROM app.user WHERE id = $1', [id]);
 };
 
 exports.getUserHistory = (id) => {
