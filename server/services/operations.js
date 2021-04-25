@@ -35,7 +35,6 @@ exports.createOperation = async (data) => {
          accbalancegbp: Number(userData.accbalancegbp) - Number(data.income),
       };
    }
-   console.log(newBalance);
    await updateWallet(newBalance, data.userid);
    return operationData.createOperation(data);
 };

@@ -1,23 +1,17 @@
 const express = require('express');
 const router = express.Router();
+const { postQueue } = require('../queues/index');
 
 const operationServices = require('../services/operations');
 
 router.post('/', async (req, res) => {
    const operationData = req.body;
-
-   try {
-      const createdOperation = await operationServices.createOperation(
-         operationData
-      );
-      res.status(201).json(createdOperation);
-   } catch (e) {
-      if (e.message == 'User not found') {
-         res.status(404).send(e.message);
-      } else {
-         res.status(400).send(e.message);
-      }
-   }
+   operationData.service = 'op';
+   postQueue.add({ service: operationData });
+   return res.status(200).json({
+      message:
+         'Your advert has been submitted successfully, operation created!',
+   });
 });
 
 router.delete('/:id', async (req, res) => {

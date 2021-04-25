@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const { postQueue } = require('../queues/');
+
 const usersService = require('../services/users');
 
 router.get('/', async (req, res) => {
@@ -20,6 +22,7 @@ router.get('/:id', async (req, res) => {
       res.status(200).json(userData);
    } catch (e) {
       res.status(404).send(e.message);
+      error: err;
    }
 });
 
@@ -36,12 +39,18 @@ router.get('/history/:id', async (req, res) => {
 
 router.post('/', async (req, res) => {
    const userData = req.body;
+   operationData.service = 'user';
 
    try {
-      const createdUser = await usersService.createUser(userData);
-      res.status(201).json(createdUser);
-   } catch (e) {
-      res.status(400).send(e.message);
+      postQueue.add({ service: userData, slug });
+
+      return res.status(200).json({
+         message: 'Your advert has been submitted successfully, user created!',
+      });
+   } catch (err) {
+      return res.status(422).json({
+         message: 'There was an unexpected error submitting your advert.',
+      });
    }
 });
 
