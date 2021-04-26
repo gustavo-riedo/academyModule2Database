@@ -1,11 +1,16 @@
+// External imports
 const Queue = require('bull');
+
+// Internal imports
 const usersService = require('../services/users');
 const operationServices = require('../services/operations');
 
+// Queue object
 const postQueue = new Queue('postQueue', process.env.REDIS_URL);
 
+// Queue process fucntion (run everytime a queue item is processed).
 postQueue.process(async (job) => {
-   const { service } = job.data;
+   const { service } = job.data; // Queue item data
 
    try {
       switch (service.service) {
@@ -26,4 +31,5 @@ postQueue.process(async (job) => {
    }
 });
 
+// Exports
 module.exports = { postQueue };

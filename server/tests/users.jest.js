@@ -1,5 +1,8 @@
+// External imports
 const crypto = require('crypto');
 const axios = require('axios');
+
+// Internal imports
 const userServices = require('../services/users');
 const operationServices = require('../services/operations');
 

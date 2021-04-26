@@ -1,10 +1,12 @@
+// External imports
 const express = require('express');
 const router = express.Router();
 
+// Internal imports
 const { postQueue } = require('../queues/');
-
 const usersService = require('../services/users');
 
+// Get all users route
 router.get('/', async (req, res) => {
    try {
       const users = await usersService.getUsers();
@@ -14,6 +16,7 @@ router.get('/', async (req, res) => {
    }
 });
 
+// Get user by ID route
 router.get('/:id', async (req, res) => {
    const userId = req.params.id;
 
@@ -26,6 +29,7 @@ router.get('/:id', async (req, res) => {
    }
 });
 
+// Get user history route
 router.get('/history/:id', async (req, res) => {
    const userId = req.params.id;
 
@@ -37,12 +41,13 @@ router.get('/history/:id', async (req, res) => {
    }
 });
 
+// Create user route
 router.post('/', async (req, res) => {
    const userData = req.body;
    operationData.service = 'user';
 
    try {
-      postQueue.add({ service: userData, slug });
+      postQueue.add({ service: userData, slug }); // Add request to the queue
 
       return res.status(200).json({
          message: 'Your advert has been submitted successfully, user created!',
@@ -54,6 +59,7 @@ router.post('/', async (req, res) => {
    }
 });
 
+// Change user wallet route
 router.patch('/:id', async (req, res) => {
    const newBalance = req.body;
    const userId = req.params.id;
@@ -70,6 +76,7 @@ router.patch('/:id', async (req, res) => {
    }
 });
 
+// Delete user route
 router.delete('/:id', async (req, res) => {
    const userId = req.params.id;
 
@@ -81,4 +88,5 @@ router.delete('/:id', async (req, res) => {
    }
 });
 
+// Exports
 module.exports = router;

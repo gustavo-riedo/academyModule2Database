@@ -1,5 +1,6 @@
-const pgp = require('pg-promise')();
+// Database connnection
 
+const pgp = require('pg-promise')();
 const bd = pgp({
    user: 'gustavoriedo',
    password: '137103',
@@ -8,4 +9,5 @@ const bd = pgp({
    database: 'module2database',
 });
 
+// Exports
 module.exports = bd;
